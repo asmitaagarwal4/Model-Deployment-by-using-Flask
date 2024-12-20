@@ -10,25 +10,29 @@
 <body>
   <div class="container col-md-5">
     
-    <h3 class="text-center">My Salary Prediction Form</h3>
+    <h3 class="text-center">Fake News Detection Form</h3>
 
-<div class="text-center">
-  <!-- <form action="/result" method="POST">
+    <div class="text-center">
+      <form action="/news" method="POST">
         <div class="form-group">
-      <label for="year">Year of Experience:</label>
-      <input type="text" class="form-control" id="year" name="year" placeholder="Enter number of years">
+          <label for="text">Input the text to predict</label>
+          <input type="text" class="form-control" id="text" name="text" placeholder="Enter text">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <h3 class="text-center">Salary Prediction Form</h3>
+      <form action="/result" method="post">
+        <div class="form-group">
+          <label for="year1">Year 1:</label>
+          <input type="text" id="year1" name="year1">
+          <label for="year2">Year 2:</label>
+          <input type="text" id="year2" name="year2">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
     </div>
-    <br>
-      <button type="submit" class="btn btn-primary">Submit</button>
-  </form> -->
-  <form action="/result" method="post">
-      <label for="year1">Year 1:</label>
-      <input type="text" id="year1" name="year1">
-      <label for="year2">Year 2:</label>
-      <input type="text" id="year2" name="year2">
-      <input type="submit" value="Submit">
-  </form>
-</div>
-</div>
+  </div>
 </body>
 </html>
