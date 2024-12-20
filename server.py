@@ -2,14 +2,19 @@
 
 #import packages
 import os
+import pandas as pd
 import numpy as np
 import flask
 from flask import Flask, request, jsonify,  render_template
 import pickle
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 app = Flask(__name__)
 
-model = pickle.load(open('models/regressor.pkl','rb'))
+# model = pickle.load(open('models/regressor.pkl','rb'))
+model = pickle.load(open('models/fake_news_pred.pkl','rb'))
+model2 = pickle.load(open('models/regressor.pkl','rb'))
 
 #to tell flask what url shoud trigger the function index()
 @app.route('/')
@@ -31,13 +36,16 @@ def result():
 
 		# convert the data into numpy array and perform prediction
 		array = np.array([[input], [input2]])
-		prediction = model.predict(np.array([[input], [input2]]))
+		prediction = model2.predict(np.array([[input], [input2]]))
 		output = prediction[0]
 		ouput2 = prediction[1]
 
 		# round output into two decimals
 		output = round(output, 2)
 		ouput2 = round(ouput2, 2)
+
+		# output = round(float(output), 2)
+		# ouput2 = round(float(ouput2), 2)
 
 		return render_template("result.html", prediction=[output,ouput2], years = [data,data2])
 
@@ -56,6 +64,34 @@ def predict():
 	#return result in json format
 	return jsonify(output)
 
+#run news model
+@app.route('/news',methods = ['POST'])
+def news():
+	if(request.method == 'POST'):
+		data = request.form['text']
+		
+		#convert the data into numpy array and perform prediction
+		# arr = np.array([data]).reshape(1,)
+		# arr = np.array([[data]])
+		# arr = pd.DataFrame([data],columns=None,dtype=object)
+		tokenizer = Tokenizer(num_words=1000)
+		tokenized_test = tokenizer.texts_to_sequences(data)
+		model_input = pad_sequences(tokenized_test, maxlen=300)
+		# print(arr.head())
+		prediction = model.predict(model_input)
+		output = prediction[0]
+		
+		if output <= 0.5:
+			output = "'Fake News'"
+		else:
+			output = "'Real News'"
+		return render_template("result2.html", prediction=output)
+
+
+# tokenized_test = tokenizer.texts_to_sequences(x_test)
+
+# # Pad the sequences to the same length as the training data
+# X_test = pad_sequences(tokenized_test, maxlen=maxlen)
 
 # set port into 5000 and debug is True
 if __name__ == '__main__':
