@@ -24,9 +24,10 @@ regressor.fit(X_train, y_train)
 
 #perform prediction
 y_pred = regressor.predict(X_test)
-
+# print(y_pred)
+print(X_test.shape)
 # you can check the peformance of the model from the following code
-#print("R2 score: {}".format(r2_score(y_test,y_pred)))
+# print("R2 score: {}".format(r2_score(y_test,y_pred)))
 
 #save the trained model
 pickle.dump(regressor, open('models/regressor.pkl','wb'))

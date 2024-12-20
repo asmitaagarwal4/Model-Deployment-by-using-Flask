@@ -22,18 +22,24 @@ def index():
 # get data from the html form and perform prediction
 @app.route('/result',methods = ['POST'])
 def result():
+	print(request.form)
 	if request.method == 'POST':
-		data = request.form['year']
+		data = request.form['year1']
+		data2 = request.form['year2']
 		input = float(data)
+		input2 = float(data2)		
 
 		# convert the data into numpy array and perform prediction
-		prediction = model.predict([[np.array(input)]])
+		array = np.array([[input], [input2]])
+		prediction = model.predict(np.array([[input], [input2]]))
 		output = prediction[0]
+		ouput2 = prediction[1]
 
 		# round output into two decimals
 		output = round(output, 2)
+		ouput2 = round(ouput2, 2)
 
-		return render_template("result.html", prediction=output, years = data)
+		return render_template("result.html", prediction=[output,ouput2], years = [data,data2])
 
 
 # get data from script file and perfrom prediction
